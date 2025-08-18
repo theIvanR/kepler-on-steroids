@@ -1,4 +1,4 @@
-# NVIDIA Tesla K40 Ultra BIOS Mod
+# NVIDIA Tesla K40c Ultra BIOS Mod
 
 This repository contains a modified "Ultra" BIOS for the **NVIDIA Tesla K40** GPU.  
 The BIOS unlocks additional power and clock controls, allowing the card to reach much higher performance than stock settings.
