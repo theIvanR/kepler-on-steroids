@@ -6,8 +6,8 @@ The BIOS unlocks additional power and clock controls, allowing the card to reach
 ---
 
 ## Features of the "Ultra" BIOS
-- **Unlocked TDP range**: 150W – 300W (adjustable with Afterburner or nvidia-smi)  
-- **Unlocked voltage control**: extra +75 mV at top range of P0 to 1000mv (vs 925mV) 
+- **Unlocked TDP range**: 150W – 235w -> 150w - 300w (adjustable with Afterburner or nvidia-smi)  
+- **Unlocked voltage Ceiling**: 925mV in P0 -> 1000mV in P0 top range.
 - **Unlocked fan control**: 25% – 100% range (instead of fixed blower profiles)  
 - **Unlocked clock limits**: up to 1150 MHz SYS and GPC, 1025MHz Xbar and L2c, 3504 MHz memory effective 
 - **Full support for MSI Afterburner and nvidia-smi adjustments**  
@@ -46,23 +46,21 @@ The BIOS unlocks additional power and clock controls, allowing the card to reach
   sudo nvflash -6 k40_ultra.rom
   ```
 
+  **WARNING**
+  - if you get a pcie error in --protectoff command, this means that your overclock or something else is unstable, meaning DO NOT FLASH! Set to lowest clock and try again.
+    ```
+    nvidia-smi -i 0 -ac 324,324
+    ```
+
 Once done, set clocks
 ```
 nvidia-smi -i 0 -ac 3504,1150
 ```
 
-  ## WARNING
-  - if you get a pcie error in --protectoff commnd, this means that your overclock or something else is unstable, meaning DO NOT FLASH! Set to lowest clock and try again.
-    ```
-    nvidia-smi -i 0 -ac 324,324
-    ```
-
 ---
 
 ## Disclaimer
 This BIOS is provided **as-is** with no warranty.  
-Flashing is at your own risk. Neither the author nor contributors are responsible for any damage caused to hardware, software, or data.  
-
-Use only if you are comfortable with BIOS flashing and GPU recovery methods.
+While this bios is stable in good faith on my silicon (5 hours Furmark), the flashing is at your own risk. Act accordingly and proceed with caution/  
 
 ---
