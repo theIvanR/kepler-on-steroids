@@ -47,7 +47,7 @@ The BIOS unlocks additional power and clock controls, allowing the card to reach
   ```
 
   **WARNING**
-  - if you get a pcie error in --protectoff command, this means that your overclock or something else is unstable, meaning DO NOT FLASH! Set to lowest clock and try again.
+  - if you get a pcie error in --protectoff command, this means that your overclock or something else is unstable, meaning DO NOT FLASH! Set to lowest clock and try again. Otherwise you may not only corrupt the bios rom but also the inforom and you will need to recover it with HPE recovery guide
     ```
     nvidia-smi -i 0 -ac 324,324
     ```
