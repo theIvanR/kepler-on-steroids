@@ -46,6 +46,17 @@ The BIOS unlocks additional power and clock controls, allowing the card to reach
   sudo nvflash -6 k40_ultra.rom
   ```
 
+Once done, set clocks
+```
+nvidia-smi -i 0 -ac 3504,1150
+```
+
+  ## WARNING
+  - if you get a pcie error in --protectoff commnd, this means that your overclock or something else is unstable, meaning DO NOT FLASH! Set to lowest clock and try again.
+    ```
+    nvidia-smi -i 0 -ac 324,324
+    ```
+
 ---
 
 ## Disclaimer
