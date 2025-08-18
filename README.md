@@ -7,9 +7,9 @@ The BIOS unlocks additional power and clock controls, allowing the card to reach
 
 ## Features of the "Ultra" BIOS
 - **Unlocked TDP range**: 150W – 300W (adjustable with Afterburner or nvidia-smi)  
-- **Unlocked voltage control**: up to +75 mV  
+- **Unlocked voltage control**: extra +75 mV at top range of P0 to 1000mv (vs 925mV) 
 - **Unlocked fan control**: 25% – 100% range (instead of fixed blower profiles)  
-- **Unlocked clock limits**: up to ~1110.5 MHz GPU, 3504 MHz memory  
+- **Unlocked clock limits**: up to 1150 MHz SYS and GPC, 1025MHz Xbar and L2c, 3504 MHz memory effective 
 - **Full support for MSI Afterburner and nvidia-smi adjustments**  
 - **Stable under load**: tested for 5 hours in FurMark without crashes  
 
@@ -28,6 +28,7 @@ The BIOS unlocks additional power and clock controls, allowing the card to reach
 ---
 
 ## Important Notes
+- Avoid using HP bioses, these limit to pcie gen2 and mess with inforom configuration.
 - The modded BIOS is provided in the description of this repository.  
 - The original recovery **Inforom** is also included in case you need to restore.  
 - Flashing a GPU BIOS always carries risk – make sure you have a backup and recovery method before proceeding.  
