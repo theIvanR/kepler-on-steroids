@@ -37,13 +37,13 @@ The BIOS unlocks additional power and clock controls, allowing the card to reach
   **Windows**:
   ```
   nvflash64 --protectoff
-  nvflash64 -6 k40_ultra.rom
+  nvflash64 -6 ultra_bios.rom
   ```
 
   **Linux**:
   ```
   sudo nvflash --protectoff
-  sudo nvflash -6 k40_ultra.rom
+  sudo nvflash -6 ultra_bios.rom
   ```
 
   **WARNING**
