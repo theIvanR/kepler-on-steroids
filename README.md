@@ -60,7 +60,12 @@ nvidia-smi -i 0 -ac 3504,1150
 ---
 
 ## Disclaimer
-This BIOS is provided **as-is** with no warranty.  
+This repository serves as a reference for:
+- Computer architecture research
+- Hardware modification education
+- Preservation of legacy computing techniques
+
+This BIOS and inforom is provided **as-is** with no warranty.  
 While this bios is stable in good faith on my silicon (5 hours Furmark), the flashing is at your own risk. Act accordingly and proceed with caution/  
 
 ---
