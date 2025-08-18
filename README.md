@@ -30,7 +30,7 @@ The BIOS unlocks additional power and clock controls, allowing the card to reach
 ## Important Notes
 - Avoid using HP bioses, these limit to pcie gen2 and mess with inforom configuration.
 - The modded BIOS is provided in the description of this repository.  
-- The original recovery **Inforom** is also included in case you need to restore.  
+- A clean INFOROM template is provided for recovery purposes
 - Flashing a GPU BIOS always carries risk – make sure you have a backup and recovery method before proceeding.  
 - Recommended command for flashing (run from elevated terminal / shell):
 
