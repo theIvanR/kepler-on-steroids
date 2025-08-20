@@ -7,7 +7,7 @@ The BIOS unlocks additional power and clock controls, allowing the card to reach
 
 ## Features of the "Ultra" BIOS
 - **Unlocked TDP range**: 150W – 235w -> 150w - 300w (adjustable with Afterburner or nvidia-smi)  
-- **Unlocked voltage Ceiling**: 925mV in P0 -> 1000mV in P0 top range.
+- **Unlocked voltage Ceiling**: 925mV in P0 -> 1012.5mV in P0 top range.
 - **Unlocked fan control**: 25% – 100% range (instead of fixed blower profiles)  
 - **Unlocked clock limits**: up to 1150 MHz SYS and GPC, 1025MHz Xbar and L2c, 3504 MHz memory effective 
 - **Full support for MSI Afterburner and nvidia-smi adjustments**  
