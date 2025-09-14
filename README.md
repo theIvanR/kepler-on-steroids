@@ -44,6 +44,10 @@ Whether for scientific computation, deep learning research, or hardware experime
   & ".\nvflash64.exe" -6 ".\<bios name goes here>.rom" --index=<your index here>
   ```
 
+  **After Reboot**
+  ```
+  nvidia-smi -i <your index here> -ac 3500,1124
+  ```
 ---
 
 ## Disclaimer
