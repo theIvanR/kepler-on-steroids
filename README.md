@@ -1,8 +1,12 @@
-# NVIDIA Tesla K40c Ultra BIOS Mod
+# NVIDIA Tesla K40c "Ultra" BIOS Mod
 
-This repository contains a modified "Ultra" BIOS for the **NVIDIA Tesla K40** GPU.  
-The BIOS unlocks additional power and clock controls, allowing the card to reach much higher performance than stock settings.
+The **NVIDIA Tesla K40** remains a formidable GPU for compute workloads, featuring **2880 CUDA cores**, dual-issue pipelines (2 IPC), and robust memory bandwidth. Out of the box, its FP32 and FP64 throughput is limited by conservative BIOS settings.  
 
+This repository provides a modified **"Ultra" BIOS** that unlocks additional voltage, power, and clock headroom, enabling the GPU to reach **up to 1124 MHz on SYS and GPC clocks**, with proportional increases for memory, Xbar, and L2c clocks. The result is a **theoretical FP32 performance of ~6.47 TFLOPS** and **FP64 performance of ~2.16 TFLOPS**, all while maintaining stability.  
+
+Unlike standard overclocking tools like MSI Afterburner, this BIOS **optimizes internal clocks such as Xbar and L2c**, unlocking performance that cannot be reached through software-only tuning.  
+
+Whether for scientific computation, deep learning research, or hardware experimentation, this BIOS allows you to explore the K40’s full potential beyond factory constraints.
 ---
 
 ## Features of the "Ultra" BIOS
