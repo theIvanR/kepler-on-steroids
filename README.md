@@ -40,7 +40,7 @@ TDP Range             : 150W – 300W+
 ```
 ---
 
-## Tools & References
+#2: Tools & References to read before proceeding
 - **NVFlash (Windows/Linux, full version)**  
   [Download here](https://www.techpowerup.com/download/nvidia-nvflash/)  
 
@@ -52,7 +52,7 @@ TDP Range             : 150W – 300W+
 
 ---
 
-## Flashing your Bios and Important Notes
+#3: Flashing your Bios and Important Notes
 - Make sure the card is STABLE, set to lowest clock with nvidia-smi. IF THERE IS A WARNING DO NOT UNDER ANY CIRCUMSTANCES FLASH, this will corrupt inforom and require recovery under linux
 - Avoid using HP bioses, these limit to pcie gen2 and mess with inforom configuration.
 - A clean INFOROM template is provided for recovery purposes
@@ -71,8 +71,9 @@ TDP Range             : 150W – 300W+
   ```
 ---
 
+# 4: Making a custom BIOS yourself
 
-
+---
 ## Disclaimer
 This repository serves as a reference for:
 - Computer architecture research
