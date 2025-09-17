@@ -1,3 +1,5 @@
+# WARING THIS IS CURRENTLY A WIP, I HOPE TO MAKE THIS PAGE MUCH BETTER SOON
+
 # 0: NVIDIA Tesla K40c "Ultra" BIOS Mod
 
 The **NVIDIA Tesla K40** remains a formidable GPU for compute workloads, featuring **2880 CUDA cores**, dual-issue pipelines (2 IPC), and robust memory bandwidth. This repository provides modified BIOS files that unlock additional voltage, power, and clock headroom beyond factory constraints.
@@ -13,7 +15,7 @@ TDP Range             : 150W – 235W
 ```
 
 ```
-# A: CUDA BIOS (stable under extreme CUDA + FurMark)
+# A: CUDA BIOS (stable under extreme CUDA + FurMark) -> work in progresss, testing
 SYS / GPC Clocks      : 1071.5 MHz  # +196.5 MHz over stock
 Xbar / L2c Clocks     : 1050 MHz    # +262.5 MHz over stock
 Memory Effective      : 3500 MHz    # +500 MHz over stock
@@ -22,7 +24,7 @@ TDP Range             : 150W – 300W
 ```
 
 ```
-# B: Casual Use BIOS (stable under FurMark / Vulkan)
+# B: Casual Use BIOS (stable under FurMark / Vulkan) -> one currently provided
 SYS / GPC Clocks      : 1124 MHz    # +249 MHz over stock
 Xbar / L2c Clocks     : 1050 MHz    # +262.5 MHz over stock
 Memory Effective      : 3500 MHz    # +500 MHz over stock
