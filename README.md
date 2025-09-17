@@ -1,21 +1,37 @@
 # NVIDIA Tesla K40c "Ultra" BIOS Mod
 
-The **NVIDIA Tesla K40** remains a formidable GPU for compute workloads, featuring **2880 CUDA cores**, dual-issue pipelines (2 IPC), and robust memory bandwidth. Out of the box, its FP32 and FP64 throughput is limited by conservative BIOS settings.  
+The **NVIDIA Tesla K40** remains a formidable GPU for compute workloads, featuring **2880 CUDA cores**, dual-issue pipelines (2 IPC), and robust memory bandwidth. This repository provides modified BIOS files that unlock additional voltage, power, and clock headroom beyond factory constraints.
 
-This repository provides a modified **"Ultra" BIOS** that unlocks additional voltage, power, and clock headroom, enabling the GPU to reach **up to 1124 MHz on SYS and GPC clocks**, with proportional increases for memory, Xbar, and L2c clocks. The result is a **theoretical FP32 performance of ~6.47 TFLOPS** and **FP64 performance of ~2.16 TFLOPS**, all while maintaining stability.  
-
-Unlike standard overclocking tools like MSI Afterburner, this BIOS **optimizes internal clocks such as Xbar and L2c**, unlocking performance that cannot be reached through software-only tuning.  
-
-Whether for scientific computation, deep learning research, or hardware experimentation, this BIOS allows you to explore the K40’s full potential beyond factory constraints.
 ---
 
-## Features of the "Ultra" BIOS
-- **Unlocked TDP range**: 150W – 235w -> 150w - 300w (adjustable with Afterburner or nvidia-smi)  
-- **Unlocked voltage Ceiling**: 925mV in P0 -> 950 mV in P0 top range.
-- **Unlocked fan control**: 25% – 100% range (instead of fixed blower profiles)  
-- **Unlocked clock limits**: up to 1124 MHz SYS and GPC, 1050MHz Xbar and L2c, 3500 MHz memory effective 
-- **Full support for MSI Afterburner and nvidia-smi adjustments**  
-- **Stable under load**: tested for in FurMark without crashes  
+## BIOS Variants
+
+### A. CUDA BIOS (Recommended)
+- **Stability**: Stable under extreme CUDA workloads and FurMark
+- **Clocks**: 
+  - SYS/GPC: 1124 MHz
+  - Xbar/L2c: 1050 MHz
+  - Memory: 3500 MHz effective
+- **Power Limit**: 300W
+- **Voltage**: 950 mV
+
+### B. Casual Use BIOS
+- **Stability**: Stable under FurMark and general compute
+- **Clocks**:
+  - SYS/GPC: 1100 MHz
+  - Xbar/L2c: 1000 MHz
+  - Memory: 3400 MHz effective
+- **Power Limit**: 280W
+- **Voltage**: 940 mV
+
+### C. Extreme BIOS (Experimental)
+- **Stability**: May require manual tuning in Afterburner
+- **Clocks**:
+  - Base: 1150 MHz (can reach 1200-1300 MHz with manual OC)
+  - Xbar/L2c: 1100 MHz
+  - Memory: 3600 MHz effective
+- **Power Limit**: 320W
+- **Voltage**: 975 mV
 
 ---
 
@@ -31,7 +47,7 @@ Whether for scientific computation, deep learning research, or hardware experime
 
 ---
 
-## Important Notes
+## Flashing your Bios and Important Notes
 - Make sure the card is STABLE, set to lowest clock with nvidia-smi. IF THERE IS A WARNING DO NOT UNDER ANY CIRCUMSTANCES FLASH, this will corrupt inforom and require recovery under linux
 - Avoid using HP bioses, these limit to pcie gen2 and mess with inforom configuration.
 - A clean INFOROM template is provided for recovery purposes
@@ -49,6 +65,8 @@ Whether for scientific computation, deep learning research, or hardware experime
   nvidia-smi -i <your index here> -ac 3500,1124
   ```
 ---
+
+
 
 ## Disclaimer
 This repository serves as a reference for:
