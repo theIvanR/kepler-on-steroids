@@ -65,7 +65,12 @@ TDP Range             : 150W – 300W
   ```
 ---
 
-# 4: Making a custom BIOS yourself
+#4 Setting Custom Clocks within Provided Bios: 
+- Use MSI afterburner or similar, set clock ranges (ex +13 Mhz cores, +150Mhz Memory)
+- use nvidia-smi to set new clock range (ex 3450,1084)
+- enjoy
+
+# 5: Making a custom BIOS yourself
 
 ---
 ## Disclaimer
