@@ -16,29 +16,21 @@ TDP Range             : 150W – 235W
 
 ```
 # A: CUDA BIOS (stable under extreme CUDA + FurMark) -> one currently provided
-SYS / GPC Clocks      : 1071.5 MHz  # +196.5 MHz over stock
-Xbar / L2c Clocks     : 1025 MHz    # +262.5 MHz over stock
-Memory Effective      : 3500 MHz    # +500 MHz over stock
+SYS / GPC Clocks      : 1071.5 MHz  # +196.5 MHz over stock, ~26 MHz headroom
+Xbar / L2c Clocks     : 1025 MHz    # +262.5 MHz over stock, >26 MHz Headroom
+Memory Effective      : 3300 MHz    # +300 MHz over stock, ~150MHz headroom
 Voltage (P0)          : 925 mV      # +0 mV over stock
 TDP Range             : 150W – 300W
 ```
 
 ```
-# B: Casual Use BIOS (stable under FurMark / Vulkan) -> WIP
-SYS / GPC Clocks      : 1124 MHz    # +249 MHz over stock
-Xbar / L2c Clocks     : 1050 MHz    # +262.5 MHz over stock
-Memory Effective      : 3500 MHz    # +500 MHz over stock
-Voltage (P0)          : 950 mV      # +25 mV over stock
-TDP Range             : 150W – 300W
+# B: Low Power BIOS -> WIP
+(will be undervolted)
 ```
 
 ```
 # C: Extreme BIOS (maximum theoretical performance, some instability)
-SYS / GPC Clocks      : 1200+ MHz   # +325+ MHz over stock, may vary
-Xbar / L2c Clocks     : 1100+ MHz   # +312.5+ MHz over stock
-Memory Effective      : 3500 MHz    # +500 MHz over stock
-Voltage (P0)          : 975 mV+     # +50+ mV over stock
-TDP Range             : 150W – 300W+
+(will be overvolted for maximum OC performance, power limit boosted further)
 ```
 ---
 
