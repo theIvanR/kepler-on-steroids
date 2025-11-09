@@ -46,7 +46,7 @@ TDP Range             : 150W – 300W
 
 ---
 
-#3: Flashing your Bios and Important Notes
+# 3: Flashing your Bios and Important Notes
 - Make sure the card is STABLE, set to lowest clock with nvidia-smi. IF THERE IS A WARNING DO NOT UNDER ANY CIRCUMSTANCES FLASH, this will corrupt inforom and require recovery under linux
 - Avoid using HP bioses, these limit to pcie gen2 and mess with inforom configuration.
 - A clean INFOROM template is provided for recovery purposes
@@ -65,7 +65,7 @@ TDP Range             : 150W – 300W
   ```
 ---
 
-#4 Setting Custom Clocks within Provided Bios: 
+# 4 Setting Custom Clocks within Provided Bios: 
 - Use MSI afterburner or similar, set clock ranges (ex +13 Mhz cores, +150Mhz Memory)
 - use nvidia-smi to set new clock range (ex 3450,1084)
 - enjoy
