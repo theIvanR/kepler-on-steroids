@@ -51,11 +51,9 @@ TDP Range             : 150W – 300W
 ---
 
 # 3: Flashing your Bios and Important Notes
- - **Ensure the GPU is 100% stable before flashing.**
+ **Ensure the GPU is 100% stable before flashing. If nvidia-smi reports any warnings or instability, do not flash.** Flashing an unstable card can corrupt the **Inforom**, requiring a Linux-based recovery.
 
 - Use `nvidia-smi` to lock clocks to the lowest setting.
-
-**If nvidia-smi reports any warnings or instability, do not flash.** Flashing an unstable card can corrupt the **Inforom**, requiring a Linux-based recovery.
 
   - **Avoid HP OEM BIOS files.** They force PCIe Gen2 operation and alter Inforom configuration in undesirable ways.
 
