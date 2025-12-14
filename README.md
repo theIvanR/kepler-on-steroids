@@ -53,7 +53,7 @@ TDP Range             : 150W – 300W
 ## 3 — Flashing your BIOS — **IMPORTANT**
 
 > ⚠️ **Do NOT flash if the GPU is unstable.**  
-> If `nvidia-smi` reports any warnings or instability, **do not flash**. Flashing an unstable card can corrupt the **Inforom** and may require a Linux-based recovery.
+> If `nvidia-smi` reports any warnings or instability, **do not flash**. Flashing an unstable card can corrupt the **Inforom** and may require a Linux-based recovery! Set instead to lowest clocks where it is stable. 
 
 ### Overview / Safety checklist
 - ✅ Ensure the GPU is **100% stable** before attempting any flash.
