@@ -51,8 +51,7 @@ TDP Range             : 150W – 300W
 ---
 
 # 3: Flashing your Bios and Important Notes
- - 
-**Ensure the GPU is 100% stable before flashing.**
+ - **Ensure the GPU is 100% stable before flashing.**
 
 Use `nvidia-smi` to lock clocks to the lowest setting.
 
@@ -60,21 +59,17 @@ Use `nvidia-smi` to lock clocks to the lowest setting.
 
 Flashing an unstable card can corrupt the **Inforom**, requiring a Linux-based recovery.
 
-  - 
-**Avoid HP OEM BIOS files.**
+  - **Avoid HP OEM BIOS files.**
 
 They force PCIe Gen2 operation and alter Inforom configuration in undesirable ways.
 
-  - 
-A **clean Inforom template** is provided for recovery scenarios.
+  - A **clean Inforom template** is provided for recovery scenarios.
 
-  - 
-Flashing any GPU BIOS carries inherent risk.
+  - Flashing any GPU BIOS carries inherent risk.
 
 Make sure you have **backups**, a **known-good ROM**, and a **recovery plan** before proceeding.
 
-  - 
-If NVFlash complains about filename length, it can help to temporarily rename your ROM to something simple like:
+  - If NVFlash complains about filename length, it can help to temporarily rename your ROM to something simple like:
 
 **bios.rom**
 
