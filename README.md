@@ -50,31 +50,59 @@ TDP Range             : 150W – 300W
 
 ---
 
-# 3: Flashing your Bios and Important Notes
- **Ensure the GPU is 100% stable before flashing. If nvidia-smi reports any warnings or instability, do not flash.** Flashing an unstable card can corrupt the **Inforom**, requiring a Linux-based recovery.
+## 3 — Flashing your BIOS — **IMPORTANT**
 
-- Use `nvidia-smi` to lock clocks to the lowest setting.
+> ⚠️ **Do NOT flash if the GPU is unstable.**  
+> If `nvidia-smi` reports any warnings or instability, **do not flash**. Flashing an unstable card can corrupt the **Inforom** and may require a Linux-based recovery.
 
-  - **Avoid HP OEM BIOS files.** They force PCIe Gen2 operation and alter Inforom configuration in undesirable ways.
+### Overview / Safety checklist
+- ✅ Ensure the GPU is **100% stable** before attempting any flash.
+- ✅ Use `nvidia-smi` to lock the GPU to the lowest stable clocks while flashing.
+- ⚠️ **Avoid HP OEM BIOS files.** They may force PCIe Gen2 and alter Inforom configuration.
+- 🧰 A **clean Inforom template** is included in this repo for recovery purposes.
+- 💾 Always have **backups**: a backup ROM and a recovery plan before proceeding.
+- ⚠️ Flashing carries inherent risk — proceed only if you understand the consequences.
 
-  - A **clean Inforom template** is provided for recovery scenarios.
-
-  - Flashing any GPU BIOS carries inherent risk. Make sure you have **backups**, a **known-good ROM**, and a **recovery plan** before proceeding.
-
-  - If NVFlash complains about filename length, it can help to temporarily rename your ROM to something simple like: **bios.rom**
-
-  **Window Commands Template**:
-  ```batch
-  nvidia-smi -i <your index here> -ac 324,324
-  & ".\nvflash64.exe" --protectoff --index=<your index here>
-  & ".\nvflash64.exe" -6 ".\<bios name goes here>.rom" --index=<your index here>
-  ```
-
-  **After Reboot**
-  ```batch
-  nvidia-smi -i <your index here> -ac 3500,1124
-  ```
 ---
+
+### Recommended step-by-step procedure
+
+1. **Verify stability**
+   - Monitor the GPU with `nvidia-smi` and other stress / diagnostic tools.
+   - If you see any warnings, errors, or abnormal behavior → **STOP**.
+
+2. **Set the GPU to the lowest safe clocks**
+   - Lock clocks to a low, stable level with `nvidia-smi` (example below).
+
+3. **Disable NVFlash protections**
+   - Run NVFlash to turn off protections prior to flashing.
+
+4. **Flash the ROM**
+   - Use NVFlash to write the ROM to your target index.
+
+5. **Reboot and verify**
+   - Reboot the system, verify the card posts correctly, and restore clocks.
+
+---
+
+### Windows command templates (example)
+
+> Replace `<index>` and `<your-bios.rom>` with your values. Use `bios.rom` if NVFlash complains about filename length.
+
+```batch
+:: 1) Set the GPU to safe, minimum clocks (example values)
+nvidia-smi -i <index> -ac 324,324
+
+:: 2) Disable NVFlash protections
+.\nvflash64.exe --protectoff --index=<index>
+
+:: 3) Flash the BIOS (use bios.rom if needed)
+.\nvflash64.exe -6 .\<your-bios.rom> --index=<index>
+
+:: 4) Reboot the machine (manual step)
+:: After reboot, restore clocks to normal operation (example values)
+nvidia-smi -i <index> -ac <memory,gpc/sys>
+```
 
 # 4 Setting Custom Clocks within Provided Bios: 
 - Use MSI afterburner or similar, set clock ranges (ex +13 Mhz cores, +150Mhz Memory)
