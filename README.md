@@ -1,10 +1,10 @@
-# WARING THIS IS CURRENTLY A WIP, I HOPE TO MAKE THIS PAGE MUCH BETTER SOON
-
 # 0: NVIDIA Tesla K40c "Ultra" BIOS Mod
 
 The **NVIDIA Tesla K40** remains a formidable GPU for compute workloads, featuring **2880 CUDA cores**, dual-issue pipelines (2 IPC), and robust memory bandwidth. This repository provides modified BIOS files that unlock additional voltage, power, and clock headroom beyond factory constraints.
 
 # 1: Comparison of Bioses
+If starting out or unsure of workload, I recommend to test the bios A first, and if the gpu is not thermally constrained switch to bios B and if more performance is desired experiment with bios C.
+
 ```
 # Stock BIOS:
 SYS / GPC Clocks      : 875 MHz
@@ -75,6 +75,7 @@ TDP Range             : 150W – 300W
 - enjoy
 
 # 5: Making a custom BIOS yourself
+(coming later)
 
 ---
 ## Disclaimer
