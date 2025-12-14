@@ -56,7 +56,6 @@ TDP Range             : 150W – 300W
 - A clean INFOROM template is provided for recovery purposes
 - Flashing a GPU BIOS always carries risk – make sure you have a backup and recovery method before proceeding.  
 
-**TIP: rename the BIOS file to BIOS for simplicity as GPU may have issues with name length**
   **Window Commands Template**:
   ```batch
   nvidia-smi -i <your index here> -ac 324,324
