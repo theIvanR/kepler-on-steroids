@@ -51,10 +51,32 @@ TDP Range             : 150W – 300W
 ---
 
 # 3: Flashing your Bios and Important Notes
-- Make sure the card is STABLE, set to lowest clock with nvidia-smi. IF THERE IS A WARNING DO NOT UNDER ANY CIRCUMSTANCES FLASH, this will corrupt inforom and require recovery under linux
-- Avoid using HP bioses, these limit to pcie gen2 and mess with inforom configuration.
-- A clean INFOROM template is provided for recovery purposes
-- Flashing a GPU BIOS always carries risk – make sure you have a backup and recovery method before proceeding.  
+ - 
+**Ensure the GPU is 100% stable before flashing.**
+
+Use `nvidia-smi` to lock clocks to the lowest setting.
+
+**If nvidia-smi reports any warnings or instability, do not flash.**
+
+Flashing an unstable card can corrupt the **Inforom**, requiring a Linux-based recovery.
+
+  - 
+**Avoid HP OEM BIOS files.**
+
+They force PCIe Gen2 operation and alter Inforom configuration in undesirable ways.
+
+  - 
+A **clean Inforom template** is provided for recovery scenarios.
+
+  - 
+Flashing any GPU BIOS carries inherent risk.
+
+Make sure you have **backups**, a **known-good ROM**, and a **recovery plan** before proceeding.
+
+  - 
+If NVFlash complains about filename length, it can help to temporarily rename your ROM to something simple like:
+
+**bios.rom**
 
   **Window Commands Template**:
   ```batch
