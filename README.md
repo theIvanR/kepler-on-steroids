@@ -15,7 +15,7 @@ TDP Range             : 150 – 235W
 ```
 
 ```
-# A: CUDA BIOS (stable under extreme CUDA + FurMark) -> one currently provided
+# A: CUDA BIOS (stable under extreme CUDA + FurMark workloads)
 SYS / GPC Clocks      : 1058.5 MHz
 Xbar / L2c Clocks       : 952.5 MHz
 Memory Effective      : 3300 MHz    # +300 MHz over stock, ~150MHz headroom
