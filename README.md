@@ -11,25 +11,25 @@ SYS / GPC Clocks      : 875 MHz
 Xbar / L2c Clocks     : 787.5 MHz
 Memory Effective      : 3000 MHz
 Voltage (P0)          : 925 mV
-TDP Range             : 150W – 235W
+TDP Range             : 150 – 235W
 ```
 
 ```
 # A: CUDA BIOS (stable under extreme CUDA + FurMark) -> one currently provided
-SYS / GPC Clocks      : 1071.5 MHz  # +196.5 MHz over stock, ~26 MHz headroom
-Xbar / L2c Clocks       : 1025 MHz    # +237.5 MHz over stock, ~26 MHz headroom
+SYS / GPC Clocks      : 1058.5 MHz
+Xbar / L2c Clocks       : 952.5 MHz
 Memory Effective      : 3300 MHz    # +300 MHz over stock, ~150MHz headroom
 Voltage (P0)          : 925 mV      # +0 mV over stock
-TDP Range             : 150W – 300W
+TDP Range             : 150 – 275W
 ```
 
 ```
-# B: High Performance "normal work" BIOS
+# B: High Performance "normal work" BIOS (can crash occasionally)
 SYS / GPC Clocks      : 1150 MHz  # +275 MHz over stock, ~? MHz headroom
 Xbar / L2c Clocks       : 1097.5 MHz  # +310 MHz over stock, ~? MHz headroom
 Memory Effective      : 3300 MHz    # +300 MHz over stock, ~150MHz headroom
 Voltage (P0)          : 937.5 mV      # +12.5 mV over stock
-TDP Range             : 150W – 300W
+TDP Range             : 150 – 300W
 ```
 
 ```
