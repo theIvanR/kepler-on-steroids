@@ -6,7 +6,7 @@ The **NVIDIA Tesla K40** remains a formidable GPU for compute workloads, featuri
 If starting out or unsure of workload, I recommend to test the bios A first, and if the gpu is not thermally constrained switch to bios B and if more performance is desired experiment with bios C.
 
 ```
-# Stock BIOS:
+# Stock BIOS: (ratio 0.9)
 SYS / GPC Clocks      : 875 MHz
 Xbar / L2c Clocks     : 787.5 MHz
 Memory Effective      : 3000 MHz
