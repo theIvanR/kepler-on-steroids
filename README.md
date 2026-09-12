@@ -100,7 +100,7 @@ If you are just starting out or are unsure which workload you will run, test **B
 
 | Profile | SYS / GPC Clocks | Xbar / L2c Clocks | Memory Effective | Voltage (P0) | TDP Range |
 |---|---|---|---|---|---|
-| **Stock** (ratio 0.9) | 875 MHz | 787.5 MHz | 3000 MHz | 925 mV | 150 – 235 W |
+| **Stock** (ratio 0.9) | 875.5 MHz | 787.5 MHz | 3004 MHz | 925 mV | 150 – 235 W |
 | **A: CUDA BIOS** (stable under extreme CUDA + FurMark) | 1084.5 MHz | 875.5 MHz | 3004 MHz | 937.5 mV | 150 – 300 W |
 
 > **Note:** BIOS B and C are higher-performance profiles with increased clocks, voltage, and power limits. They may introduce occasional instability. See the repository for their exact specifications and use them only if you understand the risks.
