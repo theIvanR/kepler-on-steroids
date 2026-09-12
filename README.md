@@ -25,8 +25,8 @@ Kepler’s SMX design can dual-issue instructions to help keep the CUDA cores fe
 
 | Clock | What it controls | Stock |
 |---|---|---|
-| **GPC** | Graphics Processing Cluster clock. This is the main shader/SMX execution domain; higher GPC clock means more CUDA core throughput. | 875 MHz |
-| **SYS** | System/chip-level clock. On the K40 it is usually tied to GPC; it affects internal chip coordination. | 875 MHz |
+| **GPC** | Graphics Processing Cluster clock. This is the main shader/SMX execution domain; higher GPC clock means more CUDA core throughput. | 875.5 MHz |
+| **SYS** | System/chip-level clock. On the K40 it is usually tied to GPC; it affects internal chip coordination. | 875.5 MHz |
 | **XBAR** | Crossbar interconnect clock. Moves data between GPCs, L2 cache, and memory controllers. | 787.5 MHz |
 | **L2C** | L2 cache clock. Controls the L2 cache slices. | 787.5 MHz |
 | **Memory** | GDDR5 effective memory data rate. | 3004 MHz |
