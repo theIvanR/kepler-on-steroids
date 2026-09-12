@@ -16,7 +16,7 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
 - **Compute capability:** 3.5
 - **Memory:** 12 GB GDDR5, 384-bit
 - **Stock boost clock:** 875 MHz (GPC/SYS)
-- **Stock memory:** 3000 MHz effective
+- **Stock memory:** 3004 MHz effective
 - **Stock TDP:** 235 W
 
 Kepler’s SMX design can dual-issue instructions to help keep the CUDA cores fed. The K40 also exposes several separate clock domains, which is important when tuning or comparing BIOS profiles.
