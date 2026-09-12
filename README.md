@@ -96,18 +96,13 @@ By flashing a modified BIOS ROM to the GPU using NVFlash.
 
 ## Comparison of BIOS Profiles
 
-If you are just starting out or are unsure which workload you will run, test **BIOS A** first. If the GPU is not thermally constrained, you can switch to **BIOS B**. If you want even more performance and are willing to trade some stability, experiment with **BIOS C**.
-
 | Profile | SYS / GPC Clocks | Xbar / L2c Clocks | Memory Effective | Voltage (P0) | TDP Range |
 |---|---|---|---|---|---|
 | **Stock** (ratio 0.9) | 875.5 MHz | 787.5 MHz | 3004 MHz | 925 mV | 150 – 235 W |
 | **A: CUDA BIOS** (stable under extreme CUDA + FurMark) | 1084.5 MHz | 875.5 MHz | 3004 MHz | 937.5 mV | 150 – 300 W |
 
-> **Note:** BIOS B and C are higher-performance profiles with increased clocks, voltage, and power limits. They may introduce occasional instability. See the repository for their exact specifications and use them only if you understand the risks.
 
----
-
-## 4. Setting Custom Clocks within Provided BIOS
+## Setting Custom Clocks within Provided BIOS
 
 Once a modified BIOS is flashed, you can fine-tune clocks further without reflashing:
 
