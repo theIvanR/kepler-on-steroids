@@ -117,5 +117,5 @@ Once a modified BIOS is flashed, you can fine-tune clocks further without reflas
 
 > **Tip:** Always verify stability after changing clocks. If you see artifacts, crashes, or `nvidia-smi` warnings, reduce the clocks until stable.
 
-# 1: Comparison of Bioses
-If starting out or unsure of workload, I recommend to test the bios A first, and if the gpu is not thermally constrained switch to bios B and if more performance is desired experiment with bios C.
+## Making custom bioses with Kepler Bios Tweaker
+- work in progress, coming soon. 
