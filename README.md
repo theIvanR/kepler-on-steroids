@@ -99,7 +99,7 @@ By flashing a modified BIOS ROM to the GPU using NVFlash.
 | Profile | SYS / GPC Clocks | Xbar / L2c Clocks | Memory Effective | Voltage (P0) | TDP Range |
 |---|---|---|---|---|---|
 | **Stock** (ratio 0.9) | 875.5 MHz | 787.5 MHz | 3004 MHz | 925 mV | 150 – 235 W |
-| **A: CUDA BIOS** (stable under extreme CUDA + FurMark) | 1084.5 MHz | 875.5 MHz | 3004 MHz | 937.5 mV | 150 – 300 W |
+| **Stable under Cuda + Furmark** | 1084.5 MHz | 875.5 MHz | 3004 MHz | 937.5 mV | 150 – 300 W |
 
 
 ## Setting Custom Clocks within Provided BIOS
