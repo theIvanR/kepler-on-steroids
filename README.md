@@ -94,38 +94,28 @@ By flashing a modified BIOS ROM to the GPU using NVFlash.
      nvidia-smi -i 0,1,2,3 -ac 3004,1084
      ```
 
+## Comparison of BIOS Profiles
 
+If you are just starting out or are unsure which workload you will run, test **BIOS A** first. If the GPU is not thermally constrained, you can switch to **BIOS B**. If you want even more performance and are willing to trade some stability, experiment with **BIOS C**.
+
+| Profile | SYS / GPC Clocks | Xbar / L2c Clocks | Memory Effective | Voltage (P0) | TDP Range |
+|---|---|---|---|---|---|
+| **Stock** (ratio 0.9) | 875 MHz | 787.5 MHz | 3000 MHz | 925 mV | 150 – 235 W |
+| **A: CUDA BIOS** (stable under extreme CUDA + FurMark) | 1084.5 MHz | 875.5 MHz | 3004 MHz | 937.5 mV | 150 – 300 W |
+
+> **Note:** BIOS B and C are higher-performance profiles with increased clocks, voltage, and power limits. They may introduce occasional instability. See the repository for their exact specifications and use them only if you understand the risks.
+
+---
+
+## 4. Setting Custom Clocks within Provided BIOS
+
+Once a modified BIOS is flashed, you can fine-tune clocks further without reflashing:
+
+- Use **MSI Afterburner** or a similar tool to set clock offsets (for example: +13 MHz core, +150 MHz memory).
+- Use **`nvidia-smi`** to set a new clock range (for example: `nvidia-smi -i <index> -ac 3450,1084`).
+- Enjoy the extra performance.
+
+> **Tip:** Always verify stability after changing clocks. If you see artifacts, crashes, or `nvidia-smi` warnings, reduce the clocks until stable.
 
 # 1: Comparison of Bioses
 If starting out or unsure of workload, I recommend to test the bios A first, and if the gpu is not thermally constrained switch to bios B and if more performance is desired experiment with bios C.
-
-```
-# Stock BIOS: (ratio 0.9)
-SYS / GPC Clocks      : 875 MHz
-Xbar / L2c Clocks     : 787.5 MHz
-Memory Effective      : 3000 MHz
-Voltage (P0)          : 925 mV
-TDP Range             : 150 – 235W
-```
-
-```
-# A: CUDA BIOS (stable under extreme CUDA + FurMark workloads)
-SYS / GPC Clocks      : 1084.5 MHz
-Xbar / L2c Clocks       : 875.5 MHz
-Memory Effective      : 3004 MHz
-Voltage (P0)          : 937.5 mV
-TDP Range             : 150 – 300W
-```
-
-
-
-# 4 Setting Custom Clocks within Provided Bios: 
-- Use MSI afterburner or similar, set clock ranges (ex +13 Mhz cores, +150Mhz Memory)
-- use nvidia-smi to set new clock range (ex 3450,1084)
-- enjoy
-
-# 5: Making a custom BIOS yourself
-(coming later)
-
-
----
