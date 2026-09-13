@@ -115,60 +115,69 @@ By flashing a modified BIOS ROM to the GPU using NVFlash.
      nvidia-smi -i 0,1,2,3 -ac 3004,1084
      ```
 
-### Clock domains explained — K40, modded BIOS
+# Modded BIOS Writeup — K40
 
-**P00 voltage range:** 887.5 – 937.5 mV *(stock + 12.5 mV offset)*
+**P00 voltage offset:** +0 mV (stock voltages retained)  
+**Power limit:** 295 W (up from 235 W stock)
+
+## What was changed
+
+- **P00 voltage:** +0 mV offset on all P00 voltages (unchanged from stock).
+- **Boost clock states 02, 03, 04:** raised to **1058.5 MHz** (with BC03 and BC02 each −13 MHz below the previous step).
+- **Power limit:** raised to **295 W** (from 235 W).
+
+## Modded P00 clock table
 
 | Clock | What it controls | Min (BC01) | Max (BC04) |
 |---|---|---|---|
-| **GPC** | Graphics Processing Cluster clock. Main shader/SMX execution domain; higher GPC = more CUDA core throughput. | 666.5 MHz | 1071.5 MHz |
-| **SYS** | System/chip-level clock. Tied to GPC on the K40; affects internal chip coordination. | 666.5 MHz | 1071.5 MHz |
+| **GPC** | Graphics Processing Cluster clock. Main shader/SMX execution domain; higher GPC = more CUDA core throughput. | 666.5 MHz | 1058.5 MHz |
+| **SYS** | System/chip-level clock. Tied to GPC on the K40; affects internal chip coordination. | 666.5 MHz | 1058.5 MHz |
 | **XBAR** | Crossbar interconnect. Moves data between GPCs, L2 cache, and memory controllers. | 599.5 MHz | 875.5 MHz |
 | **L2C** | L2 cache clock. Controls the L2 cache slices. | 599.5 MHz | 875.5 MHz |
 | **Memory** | GDDR5 effective data rate. | 3004 MHz | 3004 MHz |
 
-### What was changed vs. stock
+## Modded P00 boost clock ladder
 
-| Setting | Stock | Modded | Delta |
-|---|---|---|---|
-| P00 voltage offset | — | +12.5 mV | +12.5 mV |
-| GPC / SYS (BC02–BC04) | 849.5 – 875.5 MHz | 1045.5 – 1071.5 MHz | +196 MHz |
-| XBAR / L2C (BC02–BC04) | 761.5 – 787.5 MHz | 836.5 – 875.5 MHz | +75 – 88 MHz |
-| Power limit | 235 W | 285 W | +50 W |
-
-### P00 boost clock ladder (modded)
-
-Boost clock 04 is the top of the range (the "max" column). Clocks 03 and 02 each sit **13 MHz below the previous step**. Boost clock 01 is a **fixed default fallback** — it cannot be set directly, it's just where the card drops to.
+Boost clock 04 is the top of the range. Clocks 03 and 02 each sit **13 MHz below the previous step**. Boost clock 01 is the **fixed default fallback** — it cannot be set directly.
 
 | Boost state | Voltage | GPC / SYS | XBAR / L2C | Notes |
 |---|---|---|---|---|
-| **BC04** (max) | 937.5 mV | 1071.5 MHz | 875.5 MHz | top of P00 range |
-| **BC03** | — | 1058.5 MHz | 862.5 MHz | −13 MHz from BC04 |
-| **BC02** | — | 1045.5 MHz | 849.5 MHz | −13 MHz from BC03 |
+| **BC04** (max) | stock (925.0 mV) | 1058.5 MHz | 875.5 MHz | top of P00 range |
+| **BC03** | — | 1045.5 MHz | 862.5 MHz | −13 MHz from BC04 |
+| **BC02** | — | 1032.5 MHz | 849.5 MHz | −13 MHz from BC03 |
 | **BC01** (min) | 887.5 mV | 666.5 MHz | 599.5 MHz | fixed fallback, not directly settable |
 
-### Why these specific settings?
+## Why these specific settings?
 
-**1) Why not a 0.9 ratio (GPC : XBAR)?**
+### 1) Why not a 0.9 ratio (XBAR/L2C scaled with GPC)?
 
-Under testing, bus utilization peaked at only ~50% with the stress test, and closer to ~15% for LLM workloads. Raising XBAR/L2C further than necessary just produces waste heat with no throughput benefit, so the crossbar is kept proportionally lower than the GPC clock.
+Under testing, **bus utilization topped out at roughly 50%** during the stress test and closer to **~15% for LLM workloads**. The crossbar/L2 cache simply isn't the bottleneck, so scaling XBAR/L2C alongside GPC would only add **waste heat** with no measurable throughput gain.
 
-**2) Why not higher GPC / SYS clocks?**
+### 2) Why not higher GPC/SYS clocks?
 
-Thermal limits. See below for how to tune them in situ with MSI Afterburner.
+**Thermal limits.** Pushing GPC/SYS further runs into the card's thermal ceiling long before the silicon gives out. See below for how to fine-tune in-situ with MSI Afterburner.
 
-**3) Why not boost memory?**
+### 3) Why not memory boosted?
 
-Instability. See below for how to tune it in situ with MSI Afterburner.
+**Instability.** Memory overclocks on these cards are notoriously fussy and produce artifacts/crashes well before they yield meaningful gains. See below for in-situ tuning with MSI Afterburner if you want to experiment.
 
-### Comparison of BIOS profiles
+## Comparison of BIOS Profiles
 
-| Profile | Voltage (P00) | GPC / SYS (max) | XBAR / L2C (max) | Power limit |
-|---|---|---|---|---|
-| **Stock** | 875.0 – 925.0 mV | 875.5 MHz | 787.5 MHz | 235 W |
-| **Modded** | 887.5 – 937.5 mV | 1071.5 MHz | 875.5 MHz | 285 W |
+| Setting | Stock BIOS | Modded BIOS |
+|---|---|---|
+| P00 voltage offset | — | +0 mV (stock) |
+| Power limit | 235 W | **295 W** |
+| BC04 GPC / SYS | 875.5 MHz | **1058.5 MHz** |
+| BC03 GPC / SYS | 862.5 MHz | **1045.5 MHz** |
+| BC02 GPC / SYS | 849.5 MHz | **1032.5 MHz** |
+| BC01 GPC / SYS | 666.5 MHz (fixed) | 666.5 MHz (fixed) |
+| BC04 XBAR / L2C | 787.5 MHz | **875.5 MHz** |
+| BC03 XBAR / L2C | 774.5 MHz | **862.5 MHz** |
+| BC02 XBAR / L2C | 761.5 MHz | **849.5 MHz** |
+| BC01 XBAR / L2C | 599.5 MHz (fixed) | 599.5 MHz (fixed) |
+| Memory | 3004 MHz | 3004 MHz |
 
-## Setting custom clocks within the provided BIOS
+## Setting Custom Clocks within Provided BIOS
 
 Once a modified BIOS is flashed, you can fine-tune clocks further without reflashing:
 
@@ -176,6 +185,6 @@ Once a modified BIOS is flashed, you can fine-tune clocks further without reflas
 - Use **`nvidia-smi`** to set a new clock range (for example: `nvidia-smi -i <index> -ac 3450,1084`).
 - Enjoy the extra performance.
 
-> **Tip:** Always verify stability after changing clocks. If you see artifacts, crashes, or `nvidia-smi` warnings, reduce the clocks until stable.
+> **Tip:** Always verify stability after changing clocks. If you see artifacts, crashes, or `nvidia-smi` warnings, reduce the clocks until stable. warnings, reduce the clocks until stable.
 ## Making custom bioses with Kepler Bios Tweaker
 - work in progress, coming soon. 
