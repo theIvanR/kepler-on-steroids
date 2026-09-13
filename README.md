@@ -196,6 +196,8 @@ At normal workloads (gaming, LLM inference, short bursts), the GPUs sit at **BC0
 | **Torture test (sustained)** | BC02 | 1032.5 MHz | 849.5 MHz | ~290–295 W | up to 83 °C |
 | **Normal workloads** | BC04 | 1058.5 MHz | 875.5 MHz | well under limit | cooler |
 
+NOTE: 4.2ish TFlops were achieved in fp32 under the torture test workload. 
+
 **Takeaways:**
 
 - The **295 W power limit is the binding constraint** under torture load — the cards ride right up against it, not the thermal ceiling.
