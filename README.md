@@ -181,8 +181,8 @@ Under testing, **bus utilization topped out at roughly 50%** during the stress t
 
 Once a modified BIOS is flashed, you can fine-tune clocks further without reflashing:
 
-- Use **MSI Afterburner** or a similar tool to set clock offsets (for example: +13 MHz core, +150 MHz memory).
-- Use **`nvidia-smi`** to set a new clock range (for example: `nvidia-smi -i <index> -ac 3450,1084`).
+- Use **MSI Afterburner** or a similar tool to set clock offsets (for example: +100 MHz core, +300 MHz memory to BC04).
+- Use **`nvidia-smi`** to set a new clock range (for example: `nvidia-smi -i <index> -ac 3304,1158`).
 - Enjoy the extra performance.
 
 ## Stress Test Performance
