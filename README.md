@@ -3,6 +3,17 @@
 
 # ⚠️ Work in Progress
 
+## Tools & References to read before proceeding
+- **NVFlash (Windows/Linux, full version)**  
+  [Download here](https://www.techpowerup.com/download/nvidia-nvflash/)  
+
+- **Kepler BIOS Tweaker**  
+  [Download here](https://www.techpowerup.com/download/kepler-bios-tweaker/)  
+
+- **Inforom Recovery (if needed)**  
+  [HPE Recovery Guide](https://support.hpe.com/hpesc/public/docDisplay?docId=sf000073504en_us&docLocale=en_US)  
+
+
 ## NVIDIA Tesla K40 — Introduction
 
 The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a following for legacy CUDA workloads, cheap FP64 compute, and hardware tinkering. It is based on the **GK110B** core and packs **2880 CUDA cores** across 15 SMX units, with dual-issue SM pipelines and a 384-bit GDDR5 memory interface. Factory clocks are conservative, so modified BIOS files can unlock more voltage, power, and clock headroom than the stock firmware allows.
@@ -50,16 +61,6 @@ Boost clock 04 is the top of the range (the "max" column). Clocks 03 and 02 each
 - GPC and SYS move together; XBAR and L2C move together.
 - Only BC04 (max) and the intermediate steps below it are user-adjustable; BC01 is hardwired as the safe fallback.
 - Memory stays at 3004 MHz effective regardless of the boost state.
-
-## Tools & References to read before proceeding
-- **NVFlash (Windows/Linux, full version)**  
-  [Download here](https://www.techpowerup.com/download/nvidia-nvflash/)  
-
-- **Kepler BIOS Tweaker**  
-  [Download here](https://www.techpowerup.com/download/kepler-bios-tweaker/)  
-
-- **Inforom Recovery (if needed)**  
-  [HPE Recovery Guide](https://support.hpe.com/hpesc/public/docDisplay?docId=sf000073504en_us&docLocale=en_US)  
 
 ## Why and How to Use Custom BIOS
 
@@ -115,12 +116,6 @@ By flashing a modified BIOS ROM to the GPU using NVFlash.
      ```
 
 ## Comparison of BIOS Profiles
-
-| Profile | SYS / GPC Clocks | Xbar / L2c Clocks | Memory Effective | Voltage (P0) | TDP Range |
-|---|---|---|---|---|---|
-| **Stock** (ratio 0.9) | 875.5 MHz | 787.5 MHz | 3004 MHz | 925 mV | 150 – 235 W |
-| **Stable under Cuda + Furmark** | 1084.5 MHz | 875.5 MHz | 3004 MHz | 937.5 mV | 150 – 300 W |
-
 
 ## Setting Custom Clocks within Provided BIOS
 
