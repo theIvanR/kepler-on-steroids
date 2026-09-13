@@ -134,7 +134,7 @@ By flashing a modified BIOS ROM to the GPU using NVFlash.
 | P00 voltage offset | — | +12.5 mV | +12.5 mV |
 | GPC / SYS (BC02–BC04) | 849.5 – 875.5 MHz | 1045.5 – 1071.5 MHz | +196 MHz |
 | XBAR / L2C (BC02–BC04) | 761.5 – 787.5 MHz | 836.5 – 875.5 MHz | +75 – 88 MHz |
-| Power limit | 235 W | 300 W | +65 W |
+| Power limit | 235 W | 285 W | +50 W |
 
 ### P00 boost clock ladder (modded)
 
@@ -166,7 +166,7 @@ Instability. See below for how to tune it in situ with MSI Afterburner.
 | Profile | Voltage (P00) | GPC / SYS (max) | XBAR / L2C (max) | Power limit |
 |---|---|---|---|---|
 | **Stock** | 875.0 – 925.0 mV | 875.5 MHz | 787.5 MHz | 235 W |
-| **Modded** | 887.5 – 937.5 mV | 1071.5 MHz | 875.5 MHz | 300 W |
+| **Modded** | 887.5 – 937.5 mV | 1071.5 MHz | 875.5 MHz | 285 W |
 
 ## Setting custom clocks within the provided BIOS
 
