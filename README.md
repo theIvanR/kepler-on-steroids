@@ -115,9 +115,60 @@ By flashing a modified BIOS ROM to the GPU using NVFlash.
      nvidia-smi -i 0,1,2,3 -ac 3004,1084
      ```
 
-## Comparison of BIOS Profiles
+### Clock domains explained — K40, modded BIOS
 
-## Setting Custom Clocks within Provided BIOS
+**P00 voltage range:** 887.5 – 937.5 mV *(stock + 12.5 mV offset)*
+
+| Clock | What it controls | Min (BC01) | Max (BC04) |
+|---|---|---|---|
+| **GPC** | Graphics Processing Cluster clock. Main shader/SMX execution domain; higher GPC = more CUDA core throughput. | 666.5 MHz | 1071.5 MHz |
+| **SYS** | System/chip-level clock. Tied to GPC on the K40; affects internal chip coordination. | 666.5 MHz | 1071.5 MHz |
+| **XBAR** | Crossbar interconnect. Moves data between GPCs, L2 cache, and memory controllers. | 599.5 MHz | 875.5 MHz |
+| **L2C** | L2 cache clock. Controls the L2 cache slices. | 599.5 MHz | 875.5 MHz |
+| **Memory** | GDDR5 effective data rate. | 3004 MHz | 3004 MHz |
+
+### What was changed vs. stock
+
+| Setting | Stock | Modded | Delta |
+|---|---|---|---|
+| P00 voltage offset | — | +12.5 mV | +12.5 mV |
+| GPC / SYS (BC02–BC04) | 849.5 – 875.5 MHz | 1045.5 – 1071.5 MHz | +196 MHz |
+| XBAR / L2C (BC02–BC04) | 761.5 – 787.5 MHz | 836.5 – 875.5 MHz | +75 – 88 MHz |
+| Power limit | 235 W | 300 W | +65 W |
+
+### P00 boost clock ladder (modded)
+
+Boost clock 04 is the top of the range (the "max" column). Clocks 03 and 02 each sit **13 MHz below the previous step**. Boost clock 01 is a **fixed default fallback** — it cannot be set directly, it's just where the card drops to.
+
+| Boost state | Voltage | GPC / SYS | XBAR / L2C | Notes |
+|---|---|---|---|---|
+| **BC04** (max) | 937.5 mV | 1071.5 MHz | 875.5 MHz | top of P00 range |
+| **BC03** | — | 1058.5 MHz | 862.5 MHz | −13 MHz from BC04 |
+| **BC02** | — | 1045.5 MHz | 849.5 MHz | −13 MHz from BC03 |
+| **BC01** (min) | 887.5 mV | 666.5 MHz | 599.5 MHz | fixed fallback, not directly settable |
+
+### Why these specific settings?
+
+**1) Why not a 0.9 ratio (GPC : XBAR)?**
+
+Under testing, bus utilization peaked at only ~50% with the stress test, and closer to ~15% for LLM workloads. Raising XBAR/L2C further than necessary just produces waste heat with no throughput benefit, so the crossbar is kept proportionally lower than the GPC clock.
+
+**2) Why not higher GPC / SYS clocks?**
+
+Thermal limits. See below for how to tune them in situ with MSI Afterburner.
+
+**3) Why not boost memory?**
+
+Instability. See below for how to tune it in situ with MSI Afterburner.
+
+### Comparison of BIOS profiles
+
+| Profile | Voltage (P00) | GPC / SYS (max) | XBAR / L2C (max) | Power limit |
+|---|---|---|---|---|
+| **Stock** | 875.0 – 925.0 mV | 875.5 MHz | 787.5 MHz | 235 W |
+| **Modded** | 887.5 – 937.5 mV | 1071.5 MHz | 875.5 MHz | 300 W |
+
+## Setting custom clocks within the provided BIOS
 
 Once a modified BIOS is flashed, you can fine-tune clocks further without reflashing:
 
@@ -126,6 +177,5 @@ Once a modified BIOS is flashed, you can fine-tune clocks further without reflas
 - Enjoy the extra performance.
 
 > **Tip:** Always verify stability after changing clocks. If you see artifacts, crashes, or `nvidia-smi` warnings, reduce the clocks until stable.
-
 ## Making custom bioses with Kepler Bios Tweaker
 - work in progress, coming soon. 
