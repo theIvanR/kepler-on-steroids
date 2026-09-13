@@ -1,78 +1,229 @@
 import time
 import torch
-import torch.nn as nn
-import torch.optim as optim
-
-# -------------------------
-class ResidualDeepNet(nn.Module):
-    def __init__(self, in_dim, out_dim, hidden_dim=2048, alpha_init=1e-2):
-        super().__init__()
-        assert in_dim == out_dim, "Identity-init assumes in_dim == out_dim"
-        self.linear_passthrough = nn.Linear(in_dim, out_dim)
-        
-        layers = [nn.Linear(in_dim, hidden_dim), nn.LayerNorm(hidden_dim), nn.GELU()]
-        # first residual block
-        for _ in range(16):
-            layers += [nn.Linear(hidden_dim, hidden_dim), nn.LayerNorm(hidden_dim), nn.GELU()]
-        layers.append(nn.Linear(hidden_dim, out_dim))
-        
-        self.residual_mlp = nn.Sequential(*layers)
-        self.alpha = nn.Parameter(torch.tensor(float(alpha_init)))
-        self._init_weights()
-
-    def _init_weights(self):
-        for m in self.modules():
-            if isinstance(m, nn.Linear):
-                nn.init.xavier_uniform_(m.weight)
-                if m.bias is not None:
-                    nn.init.zeros_(m.bias)
-            elif isinstance(m, nn.LayerNorm):
-                nn.init.ones_(m.weight)
-                nn.init.zeros_(m.bias)
-        with torch.no_grad():
-            self.linear_passthrough.weight.copy_(torch.eye(self.linear_passthrough.weight.shape[0]))
-            if self.linear_passthrough.bias is not None:
-                self.linear_passthrough.bias.zero_()
-            final_lin = self.residual_mlp[-1]
-            if isinstance(final_lin, nn.Linear):
-                final_lin.weight.zero_()
-                if final_lin.bias is not None:
-                    final_lin.bias.zero_()
-
-    def forward(self, x):
-        return self.linear_passthrough(x) + self.alpha * self.residual_mlp(x)
+import torch.multiprocessing as mp
 
 
+# ============================================================
+# K40 FP32 TORTURE / TFLOPS BENCHMARK
+# ============================================================
 
-# -------------------------
+MATRIX_N = 8192
+STREAMS = 4
+WARMUP_SECONDS = 20
+TEST_SECONDS = 300
+REPORT_INTERVAL = 5
+
+
+def worker(gpu, result_queue):
+    torch.cuda.set_device(gpu)
+    device = torch.device(f"cuda:{gpu}")
+
+    props = torch.cuda.get_device_properties(gpu)
+
+    print(
+        f"\nGPU {gpu}: {props.name}\n"
+        f"  Compute capability : {props.major}.{props.minor}\n"
+        f"  SMs                : {props.multi_processor_count}\n"
+        f"  VRAM               : {props.total_memory / 1024**3:.2f} GiB\n"
+        f"  Matrix size        : {MATRIX_N} x {MATRIX_N}\n"
+        f"  Parallel GEMMs     : {STREAMS}\n",
+        flush=True
+    )
+
+    # --------------------------------------------------------
+    # Allocate independent matrices
+    # --------------------------------------------------------
+
+    A = []
+    B = []
+    C = []
+
+    print(f"GPU {gpu}: allocating...", flush=True)
+
+    for _ in range(STREAMS):
+        A.append(torch.randn(
+            MATRIX_N, MATRIX_N,
+            dtype=torch.float32,
+            device=device
+        ))
+
+        B.append(torch.randn(
+            MATRIX_N, MATRIX_N,
+            dtype=torch.float32,
+            device=device
+        ))
+
+        C.append(torch.empty(
+            MATRIX_N, MATRIX_N,
+            dtype=torch.float32,
+            device=device
+        ))
+
+    print(f"GPU {gpu}: allocation complete", flush=True)
+
+    # --------------------------------------------------------
+    # Warmup
+    # --------------------------------------------------------
+
+    print(f"GPU {gpu}: warming up for {WARMUP_SECONDS}s...", flush=True)
+
+    warmup_end = time.perf_counter() + WARMUP_SECONDS
+
+    while time.perf_counter() < warmup_end:
+        for i in range(STREAMS):
+            torch.mm(A[i], B[i], out=C[i])
+
+    torch.cuda.synchronize()
+
+    print(f"GPU {gpu}: warmup complete", flush=True)
+
+    # --------------------------------------------------------
+    # Benchmark
+    # --------------------------------------------------------
+
+    print(
+        f"GPU {gpu}: BEGIN {TEST_SECONDS}s FP32 TORTURE",
+        flush=True
+    )
+
+    start = time.perf_counter()
+    last_report = start
+
+    total_flops = 0
+
+    try:
+        while True:
+
+            for i in range(STREAMS):
+                torch.mm(A[i], B[i], out=C[i])
+
+                # GEMM performs approximately 2*N^3 FLOPs.
+                total_flops += 2 * MATRIX_N**3
+
+            now = time.perf_counter()
+
+            if now - last_report >= REPORT_INTERVAL:
+
+                # Make sure all queued GPU work is actually finished.
+                torch.cuda.synchronize()
+
+                elapsed = time.perf_counter() - start
+
+                tflops = (
+                    total_flops /
+                    elapsed /
+                    1e12
+                )
+
+                print(
+                    f"GPU {gpu} | "
+                    f"{elapsed:8.1f}s | "
+                    f"{tflops:6.3f} TFLOP/s",
+                    flush=True
+                )
+
+                last_report = now
+
+            if now - start >= TEST_SECONDS:
+                break
+
+    except RuntimeError as e:
+
+        print(
+            f"\nGPU {gpu} !!! CUDA FAILURE !!!\n{e}\n",
+            flush=True
+        )
+
+        result_queue.put((gpu, None))
+        return
+
+    torch.cuda.synchronize()
+
+    elapsed = time.perf_counter() - start
+
+    final_tflops = (
+        total_flops /
+        elapsed /
+        1e12
+    )
+
+    print(
+        f"\n"
+        f"============================================================\n"
+        f"GPU {gpu} COMPLETE\n"
+        f"------------------------------------------------------------\n"
+        f"Runtime       : {elapsed:.2f} s\n"
+        f"Total FLOPs   : {total_flops / 1e15:.3f} PFLOP\n"
+        f"Average       : {final_tflops:.3f} TFLOP/s\n"
+        f"============================================================",
+        flush=True
+    )
+
+    result_queue.put((gpu, final_tflops))
+
+
 def main():
-    DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    IN_DIM = 1024
-    BATCH_SIZE = 32768  # push as much as your GPU memory allows
 
-    print(f"Using device: {DEVICE}")
+    gpu_count = torch.cuda.device_count()
 
-    # Single continuous batch in GPU memory
-    xb = torch.randn(BATCH_SIZE, IN_DIM, device=DEVICE)
-    yb = torch.randn(BATCH_SIZE, IN_DIM, device=DEVICE)
+    print("\n" + "=" * 60)
+    print("        KEPLER FP32 TFLOPS TORTURE TEST")
+    print("=" * 60)
+    print(f"GPUs detected: {gpu_count}")
 
-    model = ResidualDeepNet(IN_DIM, IN_DIM).to(DEVICE)
-    if torch.cuda.device_count() > 1 and DEVICE.type == 'cuda':
-        model = nn.DataParallel(model)
+    for gpu in range(gpu_count):
+        print(
+            f"GPU {gpu}: {torch.cuda.get_device_name(gpu)}"
+        )
 
-    optimizer = optim.AdamW(model.parameters(), lr=1e-4)
-    criterion = nn.MSELoss()
+    print("=" * 60 + "\n")
 
-    epoch = 0
-    while True:  # hammer indefinitely
-        epoch += 1
-        start = time.time()
-        optimizer.zero_grad()
-        loss = criterion(model(xb), yb)
-        loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-        optimizer.step()
-        print(f"Epoch {epoch} | MSE: {loss.item():.6f} | time: {time.time()-start:.1f}s")
+    mp.set_start_method("spawn", force=True)
+
+    result_queue = mp.Queue()
+    processes = []
+
+    for gpu in range(gpu_count):
+
+        p = mp.Process(
+            target=worker,
+            args=(gpu, result_queue)
+        )
+
+        p.start()
+        processes.append(p)
+
+    for p in processes:
+        p.join()
+
+    # --------------------------------------------------------
+    # Results
+    # --------------------------------------------------------
+
+    results = []
+
+    while not result_queue.empty():
+        results.append(result_queue.get())
+
+    results.sort()
+
+    print("\n" + "#" * 60)
+    print("                    FINAL RESULTS")
+    print("#" * 60)
+
+    aggregate = 0.0
+
+    for gpu, tflops in results:
+
+        if tflops is None:
+            print(f"GPU {gpu}: CUDA FAILURE")
+        else:
+            print(f"GPU {gpu}: {tflops:.3f} TFLOP/s")
+            aggregate += tflops
+
+    print("-" * 60)
+    print(f"AGGREGATE: {aggregate:.3f} TFLOP/s")
+    print("#" * 60)
 
 
 if __name__ == "__main__":
