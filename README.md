@@ -21,15 +21,35 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
 
 Kepler’s SMX design can dual-issue instructions to help keep the CUDA cores fed. The K40 also exposes several separate clock domains, which is important when tuning or comparing BIOS profiles.
 
-### Clock domains explained
+### Clock domains explained — K40, stock P00 performance mode only
 
-| Clock | What it controls | Stock |
-|---|---|---|
-| **GPC** | Graphics Processing Cluster clock. This is the main shader/SMX execution domain; higher GPC clock means more CUDA core throughput. | 875.5 MHz |
-| **SYS** | System/chip-level clock. On the K40 it is usually tied to GPC; it affects internal chip coordination. | 875.5 MHz |
-| **XBAR** | Crossbar interconnect clock. Moves data between GPCs, L2 cache, and memory controllers. | 787.5 MHz |
-| **L2C** | L2 cache clock. Controls the L2 cache slices. | 787.5 MHz |
-| **Memory** | GDDR5 effective memory data rate. | 3004 MHz |
+**P00 voltage range:** 875.0 – 925.0 mV
+
+| Clock | What it controls | Min (BC01) | Max (BC04) |
+|---|---|---|---|
+| **GPC** | Graphics Processing Cluster clock. Main shader/SMX execution domain; higher GPC = more CUDA core throughput. | 666.5 MHz | 875.5 MHz |
+| **SYS** | System/chip-level clock. Tied to GPC on the K40; affects internal chip coordination. | 666.5 MHz | 875.5 MHz |
+| **XBAR** | Crossbar interconnect. Moves data between GPCs, L2 cache, and memory controllers. | 599.5 MHz | 787.5 MHz |
+| **L2C** | L2 cache clock. Controls the L2 cache slices. | 599.5 MHz | 787.5 MHz |
+| **Memory** | GDDR5 effective data rate. | 3004 MHz | 3004 MHz |
+
+### P00 boost clock ladder
+
+Boost clock 04 is the top of the range (the "max" column). Clocks 03 and 02 each sit **13 MHz below the previous step**. Boost clock 01 is a **fixed default fallback** — it cannot be set directly, it's just where the card drops to.
+
+| Boost state | Voltage | GPC / SYS | XBAR / L2C | Notes |
+|---|---|---|---|---|
+| **BC04** (max) | 925.0 mV | 875.5 MHz | 787.5 MHz | top of P00 range |
+| **BC03** | — | 862.5 MHz | 774.5 MHz | −13 MHz from BC04 |
+| **BC02** | — | 849.5 MHz | 761.5 MHz | −13 MHz from BC03 |
+| **BC01** (min) | 875.0 mV | 666.5 MHz | 599.5 MHz | fixed fallback, not directly settable |
+
+**Key points:**
+
+- Everything above is **P00 stock only** — voltage lives between 875.0 and 925.0 mV.
+- GPC and SYS move together; XBAR and L2C move together.
+- Only BC04 (max) and the intermediate steps below it are user-adjustable; BC01 is hardwired as the safe fallback.
+- Memory stays at 3004 MHz effective regardless of the boost state.
 
 ## Tools & References to read before proceeding
 - **NVFlash (Windows/Linux, full version)**  
