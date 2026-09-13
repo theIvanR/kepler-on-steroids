@@ -185,6 +185,19 @@ Once a modified BIOS is flashed, you can fine-tune clocks further without reflas
 - Use **`nvidia-smi`** to set a new clock range (for example: `nvidia-smi -i <index> -ac 3450,1084`).
 - Enjoy the extra performance.
 
-> **Tip:** Always verify stability after changing clocks. If you see artifacts, crashes, or `nvidia-smi` warnings, reduce the clocks until stable. warnings, reduce the clocks until stable.
-## Making custom bioses with Kepler Bios Tweaker
-- work in progress, coming soon. 
+## Stress Test Performance
+
+Under torture-test workload, each card pulled a **maximum of ~290–295 W** (right at the raised power limit). The GPUs settled at the **BC02** step during sustained torture load, holding **up to 83 °C** in a warm-ish room inside the case.
+
+At normal workloads (gaming, LLM inference, short bursts), the GPUs sit at **BC04** — the full 1058.5 MHz GPC/SYS step — since they aren't heat-soaked enough to trigger a downstep.
+
+| Condition | Boost state | GPC / SYS | XBAR / L2C | Power draw | Temp |
+|---|---|---|---|---|---|
+| **Torture test (sustained)** | BC02 | 1032.5 MHz | 849.5 MHz | ~290–295 W | up to 83 °C |
+| **Normal workloads** | BC04 | 1058.5 MHz | 875.5 MHz | well under limit | cooler |
+
+**Takeaways:**
+
+- The **295 W power limit is the binding constraint** under torture load — the cards ride right up against it, not the thermal ceiling.
+- Thermals land at **83 °C** in a warm case, which is why higher GPC/SYS clocks weren't pursued — there's no headroom left for it under sustained load.
+- In day-to-day use the cards never heat-soak enough to leave BC04, so you get the full modded clocks where it actually matters.
