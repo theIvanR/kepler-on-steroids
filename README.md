@@ -1,7 +1,7 @@
 
 
 
-# Tools & References to read before proceeding
+## Read before proceeding: 
 - **NVFlash (Windows/Linux, full version)**  
   [Download here](https://www.techpowerup.com/download/nvidia-nvflash/)  
 
@@ -12,7 +12,7 @@
   [HPE Recovery Guide](https://support.hpe.com/hpesc/public/docDisplay?docId=sf000073504en_us&docLocale=en_US)  
 
 
-# NVIDIA Tesla K40 — Introduction
+## Introduction to the Nvidia Tesla K40 GPU
 
 The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a following for legacy CUDA workloads, cheap FP64 compute, and hardware tinkering. It is based on the **GK110B** core and packs **2880 CUDA cores** across 15 SMX units, with dual-issue SM pipelines and a 384-bit GDDR5 memory interface. Factory clocks are conservative, so modified BIOS files can unlock more voltage, power, and clock headroom than the stock firmware allows.
 
@@ -40,7 +40,7 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
 | **Memory** | GDDR5 effective data rate. | 3004 MHz | 3004 MHz |
 
 
-# Custom BIOS: Install & Tuning
+## Custom BIOS: Install & Tuning
 
 ### Changes
 - **P00 voltage:** +25 mV on all P00 states.
