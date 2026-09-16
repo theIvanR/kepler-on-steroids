@@ -1,9 +1,7 @@
 
 
 
-# ⚠️ Work in Progress
-
-## Tools & References to read before proceeding
+# Tools & References to read before proceeding
 - **NVFlash (Windows/Linux, full version)**  
   [Download here](https://www.techpowerup.com/download/nvidia-nvflash/)  
 
@@ -14,7 +12,7 @@
   [HPE Recovery Guide](https://support.hpe.com/hpesc/public/docDisplay?docId=sf000073504en_us&docLocale=en_US)  
 
 
-## NVIDIA Tesla K40 — Introduction
+# NVIDIA Tesla K40 — Introduction
 
 The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a following for legacy CUDA workloads, cheap FP64 compute, and hardware tinkering. It is based on the **GK110B** core and packs **2880 CUDA cores** across 15 SMX units, with dual-issue SM pipelines and a 384-bit GDDR5 memory interface. Factory clocks are conservative, so modified BIOS files can unlock more voltage, power, and clock headroom than the stock firmware allows.
 
@@ -44,11 +42,11 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
 
 # Custom BIOS: Install & Tuning
 
-## Changes
+### Changes
 - **P00 voltage:** +25 mV on all P00 states.
 - **Power limit:** 275 W (was 235 W).
 
-## Safety
+### Safety
 - GPU must be **100% stable**. If `nvidia-smi` shows warnings or instability, **do not flash**.
 - Lock to the lowest stable clocks while flashing (`BC00` in `P08`):  
   `nvidia-smi -i <index> -ac 324,324`
@@ -56,7 +54,7 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
 - Keep a **backup ROM**, a clean **Inforom template**, and a Linux-based recovery plan.
 - Flashing can corrupt the Inforom. Proceed only if you understand the risks.
 
-## Flash
+### Flash
 1. Verify GPU stability.
 2. Lock clocks (see above).
 3. Disable NVFlash protections once per GPU, if needed:  
@@ -66,7 +64,7 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
    - NVFlash handles one GPU index at a time. Repeat for each GPU.
 5. Reboot, verify the card posts correctly, then restore your clocks.
 
-## Tuning
+### Tuning
 Use **MSI Afterburner** or a similar tool to find stable offsets.
 
 **Recommended starting point:**
