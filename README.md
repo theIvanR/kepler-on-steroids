@@ -54,7 +54,7 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
 5. Reboot, verify the card posts correctly, then restore your clocks.
 
 ### Tuning
-Use **MSI Afterburner** or a similar tool to find stable offsets.
+Use **MSI Afterburner** or a similar tool to find stable offsets (after setting gpu to 3004,875 or max stock clocks).
 
 | Profile | Core Offset | Resulting Core Clock | Memory Offset | Notes |
 |---|---|---|---|---|
