@@ -42,96 +42,35 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
 | **Memory** | GDDR5 effective data rate. | 3004 MHz | 3004 MHz |
 
 
+# Custom BIOS: Install & Tuning
 
-## Why and How to Use Custom BIOS
+## Changes
+- **P00 voltage:** +25 mV on all P00 states.
+- **Power limit:** 275 W (was 235 W).
 
-### Why?
-Custom BIOS files unlock higher power limits, voltage, and clock speeds than the stock firmware allows, letting you squeeze more compute performance out of the Tesla K40.
+## Safety
+- GPU must be **100% stable**. If `nvidia-smi` shows warnings or instability, **do not flash**.
+- Lock to the lowest stable clocks while flashing (`BC00` in `P08`):  
+  `nvidia-smi -i <index> -ac 324,324`
+- Avoid **HP OEM BIOS files** — they can force PCIe Gen2 and alter the Inforom.
+- Keep a **backup ROM**, a clean **Inforom template**, and a Linux-based recovery plan.
+- Flashing can corrupt the Inforom. Proceed only if you understand the risks.
 
-### How?
-By flashing a modified BIOS ROM to the GPU using NVFlash.
+## Flash
+1. Verify GPU stability.
+2. Lock clocks (see above).
+3. Disable NVFlash protections once per GPU, if needed:  
+   `.\nvflash64.exe --protectoff --index=<index>`
+4. Flash the ROM:  
+   `.\nvflash64.exe -6 .\<your-bios.rom> --index=<index>`
+   - NVFlash handles one GPU index at a time. Repeat for each GPU.
+5. Reboot, verify the card posts correctly, then restore your clocks.
 
-> ⚠️ **Do NOT flash if the GPU is unstable.**
-> If `nvidia-smi` reports any warnings or instability, **do not flash**. Flashing an unstable card can corrupt the **Inforom** and may require a Linux-based recovery. Instead, set the GPU to the lowest clocks where it is stable.
+## Tuning
+Use **MSI Afterburner** or a similar tool to find stable offsets.
 
-### Safety checklist (condensed)
-- ✅ Ensure the GPU is **100% stable** before flashing.
-- ✅ Lock the GPU to the lowest stable clocks with `nvidia-smi` while flashing.
-- ⚠️ **Avoid HP OEM BIOS files** — they may force PCIe Gen2 and alter Inforom configuration.
-- 🧰 A **clean Inforom template** is included in this repo for recovery.
-- 💾 Always have **backups**: a backup ROM and a recovery plan.
-- ⚠️ Flashing carries inherent risk — proceed only if you understand the consequences.
+**Recommended starting point:**
+- Core: **+300 MHz**
+- Memory: **+0 MHz**
 
-### Recommended step-by-step procedure
-
-1. **Verify stability**
-   - Monitor the GPU with `nvidia-smi` and stress/diagnostic tools.
-   - If you see warnings, errors, or abnormal behavior → **STOP**.
-
-2. **Set the GPU to the lowest safe clocks**
-   - Lock clocks to a low, stable level:
-     ```
-     nvidia-smi -i <index> -ac 324,324
-     ```
-
-3. **Disable NVFlash protections** (only needed once per GPU, if not already done)
-   - Run NVFlash to turn off protections:
-     ```
-     .\nvflash64.exe --protectoff --index=<index>
-     ```
-   - **Note:** NVFlash only accepts one GPU index at a time. For multiple GPUs, run it for each index (0, 1, 2, …).
-   - If protections are already disabled, skip to step 4.
-
-4. **Flash the ROM**
-   - Write the modified BIOS to the target GPU:
-     ```
-     .\nvflash64.exe -6 .\<your-bios.rom> --index=<index>
-     ```
-   - **Note:** This also only flashes one GPU at a time. Run it separately for each GPU index.
-
-5. **Reboot and verify**
-   - Reboot the system, verify the card posts correctly, and restore clocks.
-   - Example for multiple GPUs:
-     ```
-     nvidia-smi -i 0,1,2,3 -ac 3004,1084
-     ```
-
-# Modded BIOS Writeup — K40
-
-## What was changed? 
-- **P00 voltage:** +25 mV offset on all P00 state voltages.
-- **Power limit:** raised to **275 W** (from 235 W).
-
-## How to use the modded bios? 
-
-
-## Why these specific settings?
-
-### coming soon
-
-## Setting Custom Clocks within Provided BIOS
-
-Once a modified BIOS is flashed, you can fine-tune clocks further without reflashing:
-
-- Use **MSI Afterburner** or a similar tool to set clock offsets (for example: +100 MHz core, +300 MHz memory to BC04).
-- Use **`nvidia-smi`** to set a new clock range (for example: `nvidia-smi -i <index> -ac 3304,1158`).
-- Enjoy the extra performance.
-
-## Stress Test Performance
-
-Under torture-test workload, each card pulled a **maximum of ~290–295 W** (right at the raised power limit). The GPUs settled at the **BC02** step during sustained torture load, holding **up to 83 °C** in a warm-ish room inside the case.
-
-At normal workloads (gaming, LLM inference, short bursts), the GPUs sit at **BC04** — the full 1058.5 MHz GPC/SYS step — since they aren't heat-soaked enough to trigger a downstep.
-
-| Condition | Boost state | GPC / SYS | XBAR / L2C | Power draw | Temp |
-|---|---|---|---|---|---|
-| **Torture test (sustained)** | BC02 | 1032.5 MHz | 849.5 MHz | ~290–295 W | up to 83 °C |
-| **Normal workloads** | BC04 | 1058.5 MHz | 875.5 MHz | well under limit | cooler |
-
-NOTE: 4.2ish TFlops were achieved in fp32 under the torture test workload. 
-
-**Takeaways:**
-
-- The **295 W power limit is the binding constraint** under torture load — the cards ride right up against it, not the thermal ceiling.
-- Thermals land at **83 °C** in a warm case, which is why higher GPC/SYS clocks weren't pursued — there's no headroom left for it under sustained load.
-- In day-to-day use the cards never heat-soak enough to leave BC04, so you get the full modded clocks where it actually matters.
+Experiment from there and stress test after each change.
