@@ -55,12 +55,6 @@ Boost clock 04 is the top of the range (the "max" column). Clocks 03 and 02 each
 | **BC02** | — | 849.5 MHz | 761.5 MHz | −13 MHz from BC03 |
 | **BC01** (min) | 875.0 mV | 666.5 MHz | 599.5 MHz | fixed fallback, not directly settable |
 
-**Key points:**
-
-- Everything above is **P00 stock only** — voltage lives between 875.0 and 925.0 mV.
-- GPC and SYS move together; XBAR and L2C move together.
-- Only BC04 (max) and the intermediate steps below it are user-adjustable; BC01 is hardwired as the safe fallback.
-- Memory stays at 3004 MHz effective regardless of the boost state.
 
 ## Why and How to Use Custom BIOS
 
@@ -117,65 +111,16 @@ By flashing a modified BIOS ROM to the GPU using NVFlash.
 
 # Modded BIOS Writeup — K40
 
-**P00 voltage offset:** +0 mV (stock voltages retained)  
-**Power limit:** 295 W (up from 235 W stock)
+## What was changed? 
+- **P00 voltage:** +25 mV offset on all P00 state voltages.
+- **Power limit:** raised to **275 W** (from 235 W).
 
-## What was changed
+## How to use the modded bios? 
 
-- **P00 voltage:** +0 mV offset on all P00 voltages (unchanged from stock).
-- **Boost clock states 02, 03, 04:** raised to **1058.5 MHz** (with BC03 and BC02 each −13 MHz below the previous step).
-- **Power limit:** raised to **295 W** (from 235 W).
-
-## Modded P00 clock table
-
-| Clock | What it controls | Min (BC01) | Max (BC04) |
-|---|---|---|---|
-| **GPC** | Graphics Processing Cluster clock. Main shader/SMX execution domain; higher GPC = more CUDA core throughput. | 666.5 MHz | 1058.5 MHz |
-| **SYS** | System/chip-level clock. Tied to GPC on the K40; affects internal chip coordination. | 666.5 MHz | 1058.5 MHz |
-| **XBAR** | Crossbar interconnect. Moves data between GPCs, L2 cache, and memory controllers. | 599.5 MHz | 875.5 MHz |
-| **L2C** | L2 cache clock. Controls the L2 cache slices. | 599.5 MHz | 875.5 MHz |
-| **Memory** | GDDR5 effective data rate. | 3004 MHz | 3004 MHz |
-
-## Modded P00 boost clock ladder
-
-Boost clock 04 is the top of the range. Clocks 03 and 02 each sit **13 MHz below the previous step**. Boost clock 01 is the **fixed default fallback** — it cannot be set directly.
-
-| Boost state | Voltage | GPC / SYS | XBAR / L2C | Notes |
-|---|---|---|---|---|
-| **BC04** (max) | stock (925.0 mV) | 1058.5 MHz | 875.5 MHz | top of P00 range |
-| **BC03** | — | 1045.5 MHz | 862.5 MHz | −13 MHz from BC04 |
-| **BC02** | — | 1032.5 MHz | 849.5 MHz | −13 MHz from BC03 |
-| **BC01** (min) | 887.5 mV | 666.5 MHz | 599.5 MHz | fixed fallback, not directly settable |
 
 ## Why these specific settings?
 
-### 1) Why not a 0.9 ratio (XBAR/L2C scaled with GPC)?
-
-Under testing, **bus utilization topped out at roughly 50%** during the stress test and closer to **~15% for LLM workloads**. The crossbar/L2 cache simply isn't the bottleneck, so scaling XBAR/L2C alongside GPC would only add **waste heat** with no measurable throughput gain.
-
-### 2) Why not higher GPC/SYS clocks?
-
-**Thermal limits.** Pushing GPC/SYS further runs into the card's thermal ceiling long before the silicon gives out. See below for how to fine-tune in-situ with MSI Afterburner.
-
-### 3) Why not memory boosted?
-
-**Instability.** Memory overclocks on these cards are notoriously fussy and produce artifacts/crashes well before they yield meaningful gains. See below for in-situ tuning with MSI Afterburner if you want to experiment.
-
-## Comparison of BIOS Profiles
-
-| Setting | Stock BIOS | Modded BIOS |
-|---|---|---|
-| P00 voltage offset | — | +0 mV (stock) |
-| Power limit | 235 W | **295 W** |
-| BC04 GPC / SYS | 875.5 MHz | **1058.5 MHz** |
-| BC03 GPC / SYS | 862.5 MHz | **1045.5 MHz** |
-| BC02 GPC / SYS | 849.5 MHz | **1032.5 MHz** |
-| BC01 GPC / SYS | 666.5 MHz (fixed) | 666.5 MHz (fixed) |
-| BC04 XBAR / L2C | 787.5 MHz | **875.5 MHz** |
-| BC03 XBAR / L2C | 774.5 MHz | **862.5 MHz** |
-| BC02 XBAR / L2C | 761.5 MHz | **849.5 MHz** |
-| BC01 XBAR / L2C | 599.5 MHz (fixed) | 599.5 MHz (fixed) |
-| Memory | 3004 MHz | 3004 MHz |
+### coming soon
 
 ## Setting Custom Clocks within Provided BIOS
 
