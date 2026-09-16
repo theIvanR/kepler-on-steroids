@@ -30,13 +30,10 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
 - **Stock memory:** 3004 MHz effective
 - **Stock TDP:** 235 W
 
-Kepler’s SMX design can dual-issue instructions to help keep the CUDA cores fed. The K40 also exposes several separate clock domains, which is important when tuning or comparing BIOS profiles.
 
-### Clock domains explained — K40, stock P00 performance mode only
+### Clock domains explained — K40, stock P00 performance mode only {BC01,02,03,04}
 
-**P00 voltage range:** 875.0 – 925.0 mV
-
-| Clock | What it controls |  Fallback (BC01) | Boost (Max) (BC04) |
+| Clock | What it controls |  Fallback (BC01) -> 875mV | Boost (Max) (BC04) -> 925mV |
 |---|---|---|---|
 | **GPC** | Graphics Processing Cluster clock. Main shader/SMX execution domain; higher GPC = more CUDA core throughput. | 666.5 MHz | 875.5 MHz |
 | **SYS** | System/chip-level clock. Tied to GPC on the K40; affects internal chip coordination. | 666.5 MHz | 875.5 MHz |
