@@ -1,5 +1,5 @@
 
-
+# ⚠️⚠️⚠️ Active Work in Progress ⚠️⚠️⚠️
 
 ## Read before proceeding: 
 - **NVFlash (Windows/Linux, full version)**  
@@ -43,7 +43,7 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
 ## Custom BIOS: Install & Tuning
 
 ### Changes
-- **P00 voltage:** +25 mV on all P00 states.
+- **P00 voltage:** +25 mV on all P00 states (expected cost ~5% at same clock). 
 - **Power limit:** 275 W (was 235 W).
 
 ### Safety
@@ -67,8 +67,16 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
 ### Tuning
 Use **MSI Afterburner** or a similar tool to find stable offsets.
 
-**Recommended starting point:**
-- Core: **+300 MHz**
-- Memory: **+0 MHz**
+| Profile | Core Offset | Resulting Core Clock | Memory Offset | Notes |
+|---|---|---|---|---|
+| **Recommended starting point (LLM)** | +300 MHz | 1175 MHz | +0 MHz | Maximum stable for LLM work in testing. |
+| **Maximum CUDA punishment** | +150 MHz | 1025 MHz | +0 MHz | Higher core offsets may be unstable for heavy CUDA loads. |
 
-Experiment from there and stress test after each change.
+> **Memory clock:** Do not exceed **+10%**. It is almost never a bottleneck on this GPU.
+
+## Further Tweaking
+
+| Area | Potential Improvement | Status |
+|---|---|---|
+| **Bus clocks (L2C, XBAR)** | Can reduce bottleneck depending on workload | Stability issues; work in progress |
+| **Power limits** | Further headroom possible | Same caveats as bus clocks |
