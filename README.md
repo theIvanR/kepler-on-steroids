@@ -53,19 +53,47 @@ The NVIDIA Tesla K40 / K40c is a Kepler-generation compute GPU that still has a 
    - NVFlash handles one GPU index at a time. Repeat for each GPU.
 5. Reboot, verify the card posts correctly, then restore your clocks.
 
-### Tuning
-Use **MSI Afterburner** or a similar tool to find stable offsets (after setting gpu to 3004,875 or max stock clocks).
+
+## Tuning
+
+### ⚠️ Kepler BC01/BC04 Quirk (read first)
+
+The K40 defaults to **BC01 clocks** at boot, not boost (BC04). When you overclock with MSI Afterburner, the card keeps using **BC01's voltage** — not BC04's higher voltage.
+
+This is actually a **feature, not a bug**: one BIOS gives you both an efficiency mode and a full-power mode, depending on how you sequence things.
+
+### Profile 1 — Efficiency / Undervolt (BC01 voltage)
+
+Use BC01's lower voltage with a mild core bump for better perf-per-watt.
+
+1. Open MSI Afterburner and set core offset to **+300 MHz** (→ ~966 MHz).
+2. Apply clocks via `nvidia-smi -i <index> -ac 3004,966`
+3. Enjoy
+
+### Profile 2 — Full Voltage Overclock (BC04)
+To use the boosted voltage, you must first land the card in **BC04** *before* applying offsets.
+
+1. Force max stock clocks via `nvidia-smi -i <index> -ac 3004,875`
+2. Apply your MSI Afterburner offsets.
+3. Push the offset-adjusted clocks: `nvidia-smi -i <index> -ac 3004,<875+offset>`
+4. Enjoy
+
+
+Result: **BC04 voltage** applied → maximum headroom.
+
+### Recommended Offsets (for BC04, other boost states need further experimenting)
 
 | Profile | Core Offset | Resulting Core Clock | Memory Offset | Notes |
 |---|---|---|---|---|
-| **Recommended starting point (LLM)** | +300 MHz | 1175 MHz | +0 MHz | Maximum stable for LLM work in testing. |
-| **Maximum CUDA punishment** | +150 MHz | 1025 MHz | +0 MHz | Higher core offsets may be unstable for heavy CUDA loads. |
+| **Starting point (LLM)** | +300 MHz | 1175 MHz | +0 MHz | Max stable for LLM work in testing. |
+| **Max CUDA punishment** | +150 MHz | 1025 MHz | +0 MHz | Higher offsets may be unstable under heavy CUDA. |
 
 > **Memory clock:** Do not exceed **+10%**. It is almost never a bottleneck on this GPU.
 
-## Further Tweaking
+## Roadmap
 
-| Area | Potential Improvement | Status |
-|---|---|---|
-| **Bus clocks (L2C, XBAR)** | Can reduce bottleneck depending on workload | Stability issues; work in progress |
-| **Power limits** | Further headroom possible | Same caveats as bus clocks |
+- [ ] **Push BC04 bus margins further** — experiment with higher XBAR and L2C clocks on the BC04 state and document stability limits per workload.
+- [ ] **Efficiency testing** — benchmark perf-per-watt across undervolt (BC01) and full-voltage (BC04) profiles to quantify the actual trade-off.
+- [ ] **Hardware-level validation** — eventually hook the GPUs up to a high-performance oscilloscope and measure actual timing margins on the exposed buses. Real eye diagrams, not just "it didn't crash."
+
+> Contributions, test data, and corrections welcome — open an issue or PR.
